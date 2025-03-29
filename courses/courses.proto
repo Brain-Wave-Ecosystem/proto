@@ -123,10 +123,10 @@ message Block {
   string id = 1;
   string type = 2;
   oneof data {
-    common.v1.TextBlock text_block = 3;
-    common.v1.ImageBlock image_block = 4;
-    common.v1.VideoBlock video_block = 5;
-    common.v1.QuizBlock quiz_block = 6;
+    TextBlock text_block = 3;
+    ImageBlock image_block = 4;
+    VideoBlock video_block = 5;
+    QuizBlock quiz_block = 6;
   }
   uint32 position = 7;
 }
