@@ -7,7 +7,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
-import "auth/common.proto";
+import "auth/auth.proto";
 
 option go_package = "./grpc/v1";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -95,7 +95,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  common.v1.User user = 1;
+  auth.v1.User user = 1;
   string access_token = 2;
   string refresh_token = 3;
 }
@@ -118,7 +118,7 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  common.v1.User user = 1;
+  auth.v1.User user = 1;
   string access_token = 2;
   string refresh_token = 3;
 }

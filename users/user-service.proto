@@ -8,7 +8,7 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
-import "users/common.proto";
+import "users/users.proto";
 
 service UsersService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
@@ -113,11 +113,11 @@ message GetUserByIdentifierRequest {
 }
 
 message GetUserByIdentifierResponse {
-  common.v1.User user = 1;
+  users.v1.User user = 1;
 }
 
 message GetUserProfileResponse {
-  common.v1.User user = 1;
+  users.v1.User user = 1;
 }
 
 message UpdateUserRequest {
@@ -154,7 +154,7 @@ message LoginUserByEmailRequest {
 }
 
 message LoginUserResponse {
-  common.v1.User user = 1;
+  users.v1.User user = 1;
 }
 
 message CreateUserRequest {
@@ -164,7 +164,7 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {
-  common.v1.User user = 1;
+  users.v1.User user = 1;
 }
 
 message UserConfirmRequest {
