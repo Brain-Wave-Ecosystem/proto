@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "./grpc/v1";
+
+import "google/protobuf/timestamp.proto";
+
+message Course {
+  uint64 id = 1;
+  string slug = 2;
+  string title = 3;
+  string slogan = 4;
+  repeated Banner banners = 5;
+  Category category = 6;
+  repeated Tag tags = 7;
+  string description = 8;
+  repeated Skill skills = 9;
+  repeated ModuleShort modules = 10;
+  repeated Author authors = 11;
+  string language = 12;
+  bool published = 13;
+  google.protobuf.Timestamp created_at = 14;
+  optional google.protobuf.Timestamp updated_at = 15;
+}
+
+message CourseShort {
+  uint64 id = 1;
+  string slug = 2;
+  string title = 3;
+  repeated Banner banners = 4;
+  Category category = 5;
+  repeated Tag tags = 6;
+  repeated Author authors = 7;
+  string language = 8;
+  google.protobuf.Timestamp created_at = 9;
+}
+
+message Banner {
+  string id = 1;
+  string type = 2;
+  string url = 3;
+  uint32 position = 4;
+}
+
+message BannerShort {
+  string type = 1;
+  string url = 2;
+}
+
+message Category {
+  uint64 id = 1;
+  string name = 2;
+}
+
+message Tag {
+  string id = 1;
+  string name = 2;
+  uint32 position = 3;
+}
+
+message Description {
+  string text = 1;
+  repeated Skill skills = 2;
+}
+
+message Skill {
+  string id = 1;
+  string text = 2;
+  uint32 position = 3;
+}
+
+message ShillShort {
+  string text = 1;
+}
+
+message Author {
+  uint64 course_id = 1;
+  uint64 user_id = 2;
+  uint32 position = 3;
+}
+
+message Module {
+  string id = 1;
+  string title = 2;
+  string description =  3;
+  repeated Lesson lessons = 4;
+  uint32 position = 5;
+}
+
+message ModuleShort {
+  string id = 1;
+  string title = 2;
+  repeated LessonShort lessons = 3;
+  uint32 position = 4;
+}
+
+message ModulePositionRelation {
+  string module_id = 1;
+  uint32 position = 2;
+}
+
+message Lesson {
+ string id = 1;
+ string title = 2;
+ string description = 3;
+ repeated Block blocks = 4;
+ uint32 position = 5;
+}
+
+message LessonShort {
+  string id = 1;
+  string title = 2;
+  uint32 position = 3;
+}
+
+message LessonPositionRelation {
+  string lesson_id = 1;
+  uint32 position = 2;
+}
+
+message Block {
+  string id = 1;
+  string type = 2;
+  oneof data {
+    common.v1.TextBlock text_block = 3;
+    common.v1.ImageBlock image_block = 4;
+    common.v1.VideoBlock video_block = 5;
+    common.v1.QuizBlock quiz_block = 6;
+  }
+  uint32 position = 7;
+}
+
+message BlockPositionRelation {
+  string block_id = 1;
+  uint32 position = 2;
+}
+
+// Blocks types
+message TextBlock {
+  string content = 1;
+}
+
+message ImageBlock {
+  string url = 1;
+}
+
+message VideoBlock {
+  string url = 1;
+}
+
+message QuizBlock {
+  string question = 1;
+  repeated QuizBlockOption options = 2;
+  int32 correct = 3;
+}
+
+message QuizBlockOption {
+  string option = 1;
+  uint32 position = 2;
+}
+

@@ -1,0 +1,537 @@
+syntax = "proto3";
+
+package courseservice.v1;
+
+option go_package = "./grpc/v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/empty.proto";
+import "buf/validate/validate.proto";
+import "courses/common.proto";
+
+service CoursesService {
+
+  // Creation methods
+  rpc CreateCourse(CreateCourseRequest) returns (CreateCourseResponse) {
+    option (google.api.http) = {
+      post: "/v1/courses"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Course endpoint"
+      description: "Endpoint for creating course"
+    };
+  }
+
+  rpc CreateModule(CreateModuleRequest) returns (CreateModuleResponse) {
+    option (google.api.http) = {
+      post: "/v1/courses/{course_id}/modules"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Module endpoint"
+      description: "Endpoint for creating module for course"
+    };
+  }
+
+  rpc CreateLesson(CreateLessonRequest) returns (CreateLessonResponse) {
+    option (google.api.http) = {
+      post: "/v1/courses/{course_id}/modules/{module_id}/lessons"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Lesson endpoint"
+      description: "Endpoint for creating lesson for module"
+    };
+  }
+
+  rpc CreateBlock(CreateBlockRequest) returns (CreateBlockResponse) {
+    option (google.api.http) = {
+      post: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}/blocks"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Block endpoint"
+      description: "Endpoint for creating block for lesson"
+    };
+  }
+
+  rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse) {
+    option (google.api.http) = {
+      post: "/v1/courses/categories"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Category endpoint"
+      description: "Endpoint for creating category for courses"
+    };
+  }
+
+  // Getting methods
+  rpc GetCourses(GetCoursesRequest) returns (GetCoursesResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Courses list"
+      description: "Endpoint for getting courses list"
+    };
+  }
+
+  rpc GetCourse(GetCourseRequest) returns (GetCourseResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/{identifier}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Course by identifier (ID/Slug)"
+      description: "Endpoint for getting course by using ID or Slug"
+    };
+  }
+
+  rpc GetModules(GetModulesRequest) returns (GetModulesResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/{course_id}/modules"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Modules by courseID"
+      description: "Endpoint for getting modules list using courseID"
+    };
+  }
+
+  rpc GetModule(GetModuleRequest) returns (GetModuleResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/{course_id}/modules/{module_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Module by courseID and moduleID"
+      description: "Endpoint for getting module using courseID and moduleID"
+    };
+  }
+
+  rpc GetLessons(GetLessonsRequest) returns (GetLessonsResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/{course_id}/modules/{module_id}/lessons"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Lessons list"
+      description: "Endpoint for getting lessons list using moduleID"
+    };
+  }
+
+  rpc GetLesson(GetLessonRequest) returns (GetLessonResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get Lesson by moduleID and lessonID"
+      description: "Endpoint for getting lesson using moduleID lessonID"
+    };
+  }
+
+  rpc GetCategories(google.protobuf.Empty) returns (GetCategoriesResponse) {
+    option (google.api.http) = {
+      get: "/v1/courses/categories"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get all available Categories"
+      description: "Endpoint for getting list of categories"
+    };
+  }
+
+  // Updating methods
+  rpc UpdateCourse(UpdateCourseRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Course by courseID"
+      description: "Endpoint for updating courseID"
+    };
+  }
+
+  rpc PublishCourse(PublishCourseRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/publish"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Publish Course endpoint"
+      description: "Endpoint for publishing course using his ID"
+    };
+  }
+
+  rpc UnpublishCourse(UnpublishCourseRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/unpublish"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Unpublish Course endpoint"
+      description: "Endpoint for unpublishing course using his ID"
+    };
+  }
+
+  rpc UpdateModule(UpdateModuleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/{module_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Module endpoint"
+      description: "Endpoint for updating module using moduleID"
+    };
+  }
+
+  rpc UpdateModulePositions(UpdateModulePositionsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/positions"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Module's positions endpoint"
+      description: "Endpoint for updating module positions using courseID"
+    };
+  }
+
+  rpc UpdateLesson(UpdateLessonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Lesson endpoint"
+      description: "Endpoint for updating lesson using lessonID"
+    };
+  }
+
+  rpc UpdateLessonPositions(UpdateLessonPositionsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/{module_id}/lessons/positions"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Lesson's positions endpoint"
+      description: "Endpoint for updating lesson positions using moduleID"
+    };
+  }
+
+  rpc UpdateBlock(UpdateBlockRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}/blocks/{block_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Block endpoint"
+      description: "Endpoint for updating block by rewriting full content using blockID"
+    };
+  }
+
+  rpc UpdateBlockPositions(UpdateBlockPositionsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}/blocks/positions"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Blocks positions endpoint"
+      description: "Endpoint for updating blocks positions using lessonID"
+    };
+  }
+
+  rpc UpdateCategory(UpdateCategoryRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/courses/categories/{category_id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Category by ID"
+      description: "Endpoint for updating category name using ID"
+    };
+  }
+
+  // Deleting methods
+  rpc DeleteCourse(DeleteCourseRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/courses/{course_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Course' endpoint (Soft)"
+      description: "Endpoint for deleting course using courseID by unpublishing and setting delete date"
+    };
+  }
+
+  rpc DeleteModule(DeleteModuleRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/courses/{course_id}/modules/{module_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Module endpoint"
+      description: "Endpoint for deleting module using moduleID (CASCADE)"
+    };
+  }
+
+  rpc DeleteLesson(DeleteLessonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Lesson endpoint"
+      description: "Endpoint for deleting lesson using lessonID (CASCADE)"
+    };
+  }
+
+  rpc DeleteBlock(DeleteBlockRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/courses/{course_id}/modules/{module_id}/lessons/{lesson_id}/blocks/{block_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Block endpoint"
+      description: "Endpoint for deleting block using blockID"
+    };
+  }
+
+  rpc DeleteCategory(DeleteCategoryRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/courses/categories/{category_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete Category endpoint"
+      description: "Endpoint for deleting category using categoryID (REFERENCED)"
+    };
+  }
+}
+
+// Creation messages
+message CreateCourseRequest {
+  string title = 1;
+  string slogan = 2;
+  repeated common.v1.BannerShort banners = 3;
+  uint64 category_id = 4;
+  repeated string tags = 5;
+  string description = 6;
+  repeated string skills = 7;
+  repeated uint64 authors = 8;
+  string language = 9;
+}
+message CreateCourseResponse {
+  uint64 id = 1;
+}
+
+message CreateModuleRequest {
+  uint64 course_id = 1;
+  string title = 3;
+  string description = 4;
+  uint32 position = 5;
+}
+message CreateModuleResponse {
+  string id = 1;
+}
+
+message CreateLessonRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string title = 3;
+  string description = 4;
+  uint32 position = 5;
+}
+message CreateLessonResponse {
+  string id = 1;
+}
+
+message CreateBlockRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+  string type = 4;
+  oneof data {
+  common.v1.TextBlock text_block = 5;
+  common.v1.ImageBlock image_block = 6;
+  common.v1.VideoBlock video_block = 7;
+  common.v1.QuizBlock quiz_block = 8;
+  }
+  uint32 position = 9;
+}
+message CreateBlockResponse {
+  string id = 1;
+}
+
+message CreateCategoryRequest {
+  string name = 1;
+}
+message CreateCategoryResponse {
+  uint64 id = 1;
+}
+
+// Getting messages
+message GetCoursesRequest {}
+message GetCoursesResponse {
+  repeated common.v1.CourseShort course = 1;
+}
+
+message GetCourseRequest {
+  string identifier = 1;
+}
+message GetCourseResponse {
+  common.v1.Course course = 1;
+}
+
+message GetModulesRequest {
+  uint64 course_id = 1;
+}
+message GetModulesResponse {
+  repeated common.v1.ModuleShort modules = 1;
+}
+
+message GetModuleRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+}
+message GetModuleResponse {
+  common.v1.Module module = 1;
+}
+
+message GetLessonsRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+}
+message GetLessonsResponse {
+  repeated common.v1.LessonShort lessons = 1;
+}
+
+message GetLessonRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+}
+message GetLessonResponse {
+  common.v1.Lesson lesson = 1;
+}
+
+message GetCategoriesResponse {
+  repeated common.v1.Category categories = 1;
+}
+
+// Updating messages
+message UpdateCourseRequest {
+  uint64 course_id = 1;
+  optional string title = 2;
+  optional string slogan = 3;
+  optional string description = 4;
+  optional string language = 5;
+}
+
+message PublishCourseRequest {
+  uint64 course_id = 1;
+}
+
+message UnpublishCourseRequest {
+  uint64 course_id = 1;
+}
+
+message UpdateModuleRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  optional string title = 3;
+  optional string description = 4;
+}
+
+message UpdateModulePositionsRequest {
+  uint64 course_id = 1;
+  repeated common.v1.ModulePositionRelation relations = 2;
+}
+
+message UpdateLessonRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+  optional string title = 4;
+  optional string description = 5;
+}
+
+message UpdateLessonPositionsRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  repeated common.v1.LessonPositionRelation relations = 3;
+}
+
+message UpdateBlockRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+  string block_id = 4;
+  string type = 5;
+  oneof data {
+    common.v1.TextBlock text_block = 6;
+    common.v1.ImageBlock image_block = 7;
+    common.v1.VideoBlock video_block = 8;
+    common.v1.QuizBlock quiz_block = 9;
+  }
+}
+
+message UpdateBlockPositionsRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+  repeated common.v1.BlockPositionRelation relations = 4;
+}
+
+message UpdateCategoryRequest {
+  uint64 category_id = 1;
+  string name = 2;
+}
+
+// Deleting messages
+message DeleteCourseRequest {
+  uint64 course_id = 1;
+}
+
+message DeleteModuleRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+}
+
+message DeleteLessonRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+}
+
+message DeleteBlockRequest {
+  uint64 course_id = 1;
+  string module_id = 2;
+  string lesson_id = 3;
+  string block_id = 4;
+}
+
+message DeleteCategoryRequest {
+  uint64 category_id = 1;
+}

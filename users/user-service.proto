@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package userservice.v1;
+
+option go_package = "./grpc/v1";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/empty.proto";
+import "buf/validate/validate.proto";
+import "users/common.proto";
+
+service UsersService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc ConfirmUser(UserConfirmRequest) returns (google.protobuf.Empty);
+  rpc LoginUserByEmail(LoginUserByEmailRequest) returns (LoginUserResponse);
+
+  rpc GetUserByIdentifier(GetUserByIdentifierRequest) returns (GetUserByIdentifierResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{identifier}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get User by identifier"
+      description: "Get user by his ID or slug"
+    };
+  }
+
+  rpc GetUserProfile(google.protobuf.Empty) returns (GetUserProfileResponse) {
+    option (google.api.http) = {
+      get: "/v1/me"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Fetch user profile"
+      description: "Endpoint for fetching user's profile"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/me"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update User profile"
+      description: "Endpoint for updating user's profile"
+    };
+  }
+
+  rpc UpdateUserAdmin(UpdateUserAdminRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/admin/users/{id}"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update User's profile by Admin"
+      description: "Endpoint for updating user's profile for admin"
+    };
+  }
+
+  rpc UpdateUserPassword(UpdateUserPasswordRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/v1/me/password"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Change User's password"
+      description: "Endpoint for changing password for user's profile"
+    };
+  }
+
+  rpc UpdateUserPasswordAdmin(UpdateUserPasswordAdminRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/admin/users/{id}/password"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Change User's profile password by Admin"
+      description: "Endpoint for updating user's profile password for admin"
+    };
+  }
+
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/me"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete User's profile"
+      description: "Endpoint for deleting profile by user himself"
+    };
+  }
+
+  rpc DeleteUserAdmin(DeleteUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/admin/users/{id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete User's profile by Admin"
+      description: "Endpoint for deleting user's profile for admin"
+    };
+  }
+}
+
+message GetUserByIdentifierRequest {
+  string identifier = 1;
+}
+
+message GetUserByIdentifierResponse {
+  common.v1.User user = 1;
+}
+
+message GetUserProfileResponse {
+  common.v1.User user = 1;
+}
+
+message UpdateUserRequest {
+  int64 id = 1;
+  optional string avatar_url = 2;
+  optional string full_name = 3;
+  optional string bio = 4;
+}
+
+message UpdateUserAdminRequest {
+  int64 id = 1;
+  optional string avatar_url = 2;
+  optional string full_name = 3;
+  optional string bio = 4;
+}
+
+message UpdateUserPasswordRequest {
+  int64 id = 1;
+  string password = 2;
+}
+
+message UpdateUserPasswordAdminRequest {
+  int64 id = 1;
+  string password = 2;
+}
+
+message DeleteUserRequest {
+  int64 id = 1;
+}
+
+message LoginUserByEmailRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  common.v1.User user = 1;
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string password = 2;
+  string full_name = 3;
+}
+
+message CreateUserResponse {
+  common.v1.User user = 1;
+}
+
+message UserConfirmRequest {
+  int64 userId = 1;
+}
