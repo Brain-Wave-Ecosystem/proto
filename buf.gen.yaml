@@ -1,17 +1,17 @@
 version: v1
 plugins:
   - name: go
-    out: ./gen/v1
+    out: ./gen
     opt:
       - paths=source_relative
 
   - name: go-grpc
-    out: ./gen/v1
+    out: ./gen
     opt:
       - paths=source_relative
 
   - name: grpc-gateway
-    out: ./gen/v1
+    out: ./gen
     opt:
       - logtostderr=true
       - paths=source_relative
